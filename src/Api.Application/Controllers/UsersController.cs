@@ -20,7 +20,7 @@ namespace Api.Application.Controllers
 
         [AllowAnonymous]
         [HttpPost]
-        public async Task<ActionResult> Post([FromBody] UserDtoCreate user)
+        public async Task<IActionResult> Post([FromBody] UserDtoCreate user)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -39,10 +39,9 @@ namespace Api.Application.Controllers
             }
         }
         
-        #region Demais Métodos
         [Authorize("Bearer")]
         [HttpGet]
-        public async Task<ActionResult> GetAll()
+        public async Task<IActionResult> GetAll()
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -59,7 +58,7 @@ namespace Api.Application.Controllers
 
         [Authorize("Bearer")]
         [HttpGet("{id}", Name = "GetWithId")]
-        public async Task<ActionResult> Get(Guid id)
+        public async Task<IActionResult> Get(Guid id)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -80,7 +79,7 @@ namespace Api.Application.Controllers
 
         [Authorize("Bearer")]
         [HttpPut]
-        public async Task<ActionResult> Put([FromBody] UserDtoUpdate user)
+        public async Task<IActionResult> Put([FromBody] UserDtoUpdate user)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -101,7 +100,7 @@ namespace Api.Application.Controllers
         
         [Authorize("Bearer")]
         [HttpDelete("{id}")]
-        public async Task<ActionResult> Delete(Guid id)
+        public async Task<IActionResult> Delete(Guid id)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -115,6 +114,5 @@ namespace Api.Application.Controllers
                 return StatusCode((int)HttpStatusCode.InternalServerError, e.Message);
             }
         }
-        #endregion
     }
 }

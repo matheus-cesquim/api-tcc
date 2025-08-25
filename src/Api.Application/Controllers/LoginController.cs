@@ -20,7 +20,7 @@ namespace Api.Application.Controllers
 
         [AllowAnonymous]
         [HttpPost]
-        public async Task<object> Login([FromBody] LoginDto loginDto)
+        public async Task<IActionResult> Login([FromBody] LoginDto loginDto)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);

@@ -31,7 +31,7 @@ namespace Api.Service.Services.User
             _encryptService = encryptService;
         }
 
-        public async Task<object> Login(LoginDto user)
+        public async Task<LoginDtoResult> Login(LoginDto user)
         {
             var baseUser = new UserEntity();
             if (user != null && !string.IsNullOrWhiteSpace(user.Email))
@@ -51,31 +51,34 @@ namespace Api.Service.Services.User
                         );
 
                         DateTime createDate = DateTime.Now;
-                        DateTime expirationDate = createDate + TimeSpan.FromSeconds(Convert.ToInt32(Environment.GetEnvironmentVariable("SECONDS")));
+                        DateTime expirationDate = createDate + TimeSpan.FromSeconds(Convert.ToInt32(Environment.GetEnvironmentVariable("SECONDS") ?? "3600"));
 
                         var handler = new JwtSecurityTokenHandler(); 
                         string token = CreateToken(identity, createDate, expirationDate, handler);
                         return SuccessObject(createDate, expirationDate, token, user);
                     } else {
-                        return new {
-                            authenticated = false,
-                            message = "Failed to authenticate user"
+                        return new LoginDtoResult
+                        {
+                            Authenticated = false,
+                            Message = "Failed to authenticate user"
                         };
                     }
                 }
                 else
                 {
-                    return new {
-                        authenticated = false,
-                        message = "Failed to authenticate user"
+                    return new LoginDtoResult
+                    {
+                        Authenticated = false,
+                        Message = "Failed to authenticate user"
                     };
                 }
             }
             else
             {
-                return new {
-                    authenticated = false,
-                    message = "Failed to authenticate user"
+                return new LoginDtoResult
+                {
+                    Authenticated = false,
+                    Message = "Failed to authenticate user"
                 };
             }
         }
@@ -96,15 +99,16 @@ namespace Api.Service.Services.User
             return token;
         }
 
-        private object SuccessObject(DateTime createDate, DateTime expirationDate, string token, LoginDto user)
+        private LoginDtoResult SuccessObject(DateTime createDate, DateTime expirationDate, string token, LoginDto user)
         {
-            return new {
-                authenticated = true,
-                created = createDate.ToString("yyyy-MM-dd HH:mm:ss"),
-                expiration = expirationDate.ToString("yyyy-MM-dd HH:mm:ss"),
-                accessToken = token,
-                email = user.Email,
-                message = "Successfully authenticated user"
+            return new LoginDtoResult
+            {
+                Authenticated = true,
+                Created = createDate.ToString("yyyy-MM-dd HH:mm:ss"),
+                Expiration = expirationDate.ToString("yyyy-MM-dd HH:mm:ss"),
+                AccessToken = token,
+                Email = user.Email,
+                Message = "Successfully authenticated user"
             };
         }
     }
