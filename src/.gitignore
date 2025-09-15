@@ -1,0 +1,6 @@
+
+TestResults/
+**/TestResults/
+**/coveragereport/
+**/*.trx
+**/coverage.cobertura.xml
