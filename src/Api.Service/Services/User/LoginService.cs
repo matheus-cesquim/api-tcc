@@ -56,31 +56,14 @@ namespace Api.Service.Services.User
                         var handler = new JwtSecurityTokenHandler(); 
                         string token = CreateToken(identity, createDate, expirationDate, handler);
                         return SuccessObject(createDate, expirationDate, token, user);
-                    } else {
-                        return new LoginDtoResult
-                        {
-                            Authenticated = false,
-                            Message = "Failed to authenticate user"
-                        };
                     }
                 }
-                else
-                {
-                    return new LoginDtoResult
-                    {
-                        Authenticated = false,
-                        Message = "Failed to authenticate user"
-                    };
-                }
             }
-            else
+            return new LoginDtoResult
             {
-                return new LoginDtoResult
-                {
-                    Authenticated = false,
-                    Message = "Failed to authenticate user"
-                };
-            }
+                Authenticated = false,
+                Message = "Failed to authenticate user"
+            };
         }
 
         private string CreateToken(ClaimsIdentity identity, DateTime createDate, DateTime expirationDate, JwtSecurityTokenHandler handler)
